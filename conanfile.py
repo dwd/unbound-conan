@@ -1,3 +1,4 @@
+from conan import ConanFile
 from conan.tools.gnu import Autotools, AutotoolsDeps, AutotoolsToolchain
 from conan.tools.files import copy, get
 
