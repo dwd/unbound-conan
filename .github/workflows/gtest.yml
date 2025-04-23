@@ -37,9 +37,17 @@ jobs:
           conan profile detect -e
           conan remote add conan-nexus https://nexus.cridland.io/repository/dwd-conan --force
           conan remote login conan-nexus ci --password ${{ secrets.NEXUS_PASSWORD }}
-      - name: Conan Deps
-        run: conan install . --output-folder=gh-build -s build_type=Debug -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
-      - name: Create package
-        run: conan create . --version=${{ env.VERSION }}
+      - name: Conan Deps (Release)
+        run: conan install . -s build_type=Release -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
+      - name: Conan Deps (Debug)
+        run: conan install . -s build_type=Debug -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
+      - name: Conan Deps (RelWithDebInfo)
+        run: conan install . -s build_type=RelWithDebInfo -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
+      - name: Create package (Release)
+        run: conan create . -s build_type=Release -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
+      - name: Create package (Debug)
+        run: conan create . -s build_type=Debug -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
+      - name: Create package (RelWithDebInfo)
+        run: conan create . -s build_type=RelWithDebInfo -s compiler.cppstd=gnu23  -b missing --version=${{ env.VERSION }}
       - name: Upload
         run: conan upload -r conan-nexus --confirm 'unbound/*'
