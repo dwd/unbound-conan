@@ -18,7 +18,7 @@ class MyLibraryConan(ConanFile):
         self.requires("libevent/[>=2.1.0 <3]")
 
     def source(self):
-        upstream_version = self.version.split('_')[0]
+        upstream_version = self.version.split('-')[0]
         get(self, url=f"https://github.com/NLnetLabs/unbound/archive/refs/tags/release-{upstream_version}.tar.gz", strip_root=True)
 
     def generate(self):
