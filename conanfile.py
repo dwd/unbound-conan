@@ -13,7 +13,7 @@ class MyLibraryConan(ConanFile):
     tool_requires = "flex/2.6.4", "bison/3.8.2"
     default_options = {
         "openssl/*:shared": True,
-        "zlib/*shared": True,
+        "zlib/*:shared": True,
         "libevent/*:shared": True,
     }
 
