@@ -11,6 +11,11 @@ class MyLibraryConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "."
     tool_requires = "flex/2.6.4", "bison/3.8.2"
+    default_options = {
+        "openssl/*:shared": True,
+        "zlib/*:shared": True,
+        "libevent/*:shared": True,
+    }
 
     def requirements(self):
         self.requires("openssl/[>=1.1 <4]")
@@ -18,7 +23,7 @@ class MyLibraryConan(ConanFile):
         self.requires("libevent/[>=2.1.0 <3]")
 
     def source(self):
-        upstream_version = self.version.split('_')[0]
+        upstream_version = self.version.split('-')[0]
         get(self, url=f"https://github.com/NLnetLabs/unbound/archive/refs/tags/release-{upstream_version}.tar.gz", strip_root=True)
 
     def generate(self):
@@ -28,6 +33,7 @@ class MyLibraryConan(ConanFile):
         tc.configure_args.append(f"--with-ssl={self.dependencies['openssl'].package_folder}")
         tc.configure_args.append("--with-pthreads")
         tc.configure_args.append("--disable-shared")
+        tc.configure_args.append("--with-pic")
         tc.generate()
         deps = AutotoolsDeps(self)
         deps.generate()
