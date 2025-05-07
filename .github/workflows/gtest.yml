@@ -17,8 +17,10 @@ jobs:
         id: tag
         run: |
           TAG=$(git describe --tags --abbrev=0)
+          echo "TAG=${TAG}" >> $GITHUB_ENV
           COMMITS_SINCE_TAG=$(git rev-list ${TAG}..HEAD --count)
-          if [ "${COMMITS_SINCE_TAG}" -eq 0 ]; then
+          BRANCH=$(git branch --show-current)
+          if [ "${COMMITS_SINCE_TAG}" -eq 0 ] || [ "${BRANCH}" = "main" ]; then
             echo "VERSION=${TAG}" >> $GITHUB_ENV
           else
             echo "VERSION="$(git describe --tags --abbrev=8) >> $GITHUB_ENV

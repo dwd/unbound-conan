@@ -28,6 +28,7 @@ class MyLibraryConan(ConanFile):
         tc.configure_args.append(f"--with-ssl={self.dependencies['openssl'].package_folder}")
         tc.configure_args.append("--with-pthreads")
         tc.configure_args.append("--disable-shared")
+        tc.configure_args.append("--with-pic")
         tc.generate()
         deps = AutotoolsDeps(self)
         deps.generate()
